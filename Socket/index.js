@@ -31,7 +31,11 @@ function Socket() {
     try {
       message = JSON.parse(message);
     } catch (e) {
-      console.error(e);
+      try {
+        message = JSON.parse(message + '}');
+      } catch (e) {
+        console.error(e);
+      }
     }
     this.emit(message.op, message.x);
   }.bind(this));
