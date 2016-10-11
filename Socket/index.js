@@ -28,7 +28,11 @@ function Socket() {
   };
 
   socket.on('message', function (message) {
-    message = JSON.parse(message);
+    try {
+      message = JSON.parse(message);
+    } catch (e) {
+      console.error(e);
+    }
     this.emit(message.op, message.x);
   }.bind(this));
 
@@ -49,6 +53,11 @@ Socket.prototype.onOpen = function (callback) {
 
 Socket.prototype.onClose = function (callback) {
   this.on('close', callback);
+  return this;
+};
+
+Socket.prototype.onError = function (callback) {
+  this.on('error', callback);
   return this;
 };
 
